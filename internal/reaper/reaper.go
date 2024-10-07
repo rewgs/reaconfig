@@ -8,8 +8,6 @@ import (
 
 type Reaper struct {
     ResourcesPath   string
-    // IsOpen          bool
-    // installed       bool
 }
 
 type reaper interface {
@@ -21,19 +19,19 @@ func (r *Reaper) isOpen() bool {
 }
 
 func getResourcesPath() string {
-    var resourcesPath string
+    homeDir, err := os.UserHomeDir()
+    if err != nil {
+        // TODO:
+    }
 
+    var resourcesPath string
     switch runtime.GOOS {
     case "darwin":
-        homeDir, err := os.UserHomeDir()
-        if err != nil {
-            // TODO:
-        }
         resourcesPath = path.Join(homeDir, "Library", "Application Support", "REAPER")
-    // TODO:
-    // case "linux":
-    // TODO:
-    // case "windows":
+    case "linux":
+        resourcesPath = path.Join(homeDir, ".config", "REAPER")
+    case "windows":
+        resourcesPath = path.Join(homeDir, "AppData", "Roaming", "REAPER")
     default:
         // TODO:
     }
