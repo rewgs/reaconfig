@@ -8,6 +8,16 @@ import (
 
 type Reaper struct {
     ResourcesPath   string
+    // IsOpen          bool
+    // installed       bool
+}
+
+type reaper interface {
+    isOpen()                bool
+    isInstalled()           bool
+}
+
+func (r *Reaper) isOpen() bool {
 }
 
 func getResourcesPath() string {
