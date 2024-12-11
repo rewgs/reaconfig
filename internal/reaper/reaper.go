@@ -1,39 +1,26 @@
 package reaper
 
-import (
-    "path"
-    "os"
-    "runtime"
-)
-
 type Reaper struct {
-    ResourcesPath   string
+	Name string
+	Path *Path // pointer to struct containing relevant path
 }
 
-type reaper interface {
-    isOpen()                bool
-    isInstalled()           bool
+func (r *Reaper) IsInstalled() bool {
+	if r.Path.App != nil && r.Path.Bin != nil {
+		return true
+	}
+	return false
 }
 
-func (r *Reaper) isOpen() bool {
-}
+// TODO:
+// func (r *Reaper) isOpen() bool {
+// 	proc, err := os.FindProcess(r.BinPath)
+// }
 
-func getResourcesPath() string {
-    homeDir, err := os.UserHomeDir()
-    if err != nil {
-        // TODO:
-    }
-
-    var resourcesPath string
-    switch runtime.GOOS {
-    case "darwin":
-        resourcesPath = path.Join(homeDir, "Library", "Application Support", "REAPER")
-    case "linux":
-        resourcesPath = path.Join(homeDir, ".config", "REAPER")
-    case "windows":
-        resourcesPath = path.Join(homeDir, "AppData", "Roaming", "REAPER")
-    default:
-        // TODO:
-    }
-    return resourcesPath
+func New() *Reaper {
+	reaper := Reaper{
+		Name: "REAPER",
+		Path: getPaths(),
+	}
+	return &reaper
 }
